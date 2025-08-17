@@ -43,6 +43,10 @@ export default function Home() {
 
       if (result.success) {
         setData(result);
+        // Update selectedDex to match the actual DEX being displayed
+        if (!dex || dex === 'default') {
+          setSelectedDex(result.metadata.targetDex);
+        }
       } else {
         setError(result.error || 'Failed to fetch data');
       }

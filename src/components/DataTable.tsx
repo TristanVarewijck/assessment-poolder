@@ -7,6 +7,8 @@ import {
 import { PoolData } from '@/types/data';
 import { Box, Calculator, Coins, DollarSign } from 'lucide-react';
 import CopyString from './CopyString';
+import { useState } from 'react';
+import Pagination from './Pagination';
 
 interface DataTableProps {
   targetDex: string;
@@ -19,6 +21,20 @@ interface TableHeader {
 }
 
 const DataTable = ({ targetDex, pools }: DataTableProps) => {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = 10;
+  const totalItems = Object.keys(pools).length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const currentPools = Object.entries(pools).slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   const tableHeaders: TableHeader[] = [
     {
       label: 'Pool Name',
@@ -70,63 +86,63 @@ const DataTable = ({ targetDex, pools }: DataTableProps) => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {Object.entries(pools)
-                  .slice(0, 20)
-                  .map(([poolName, poolData]) => (
-                    <tr key={poolName} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {formatPoolName(poolName).toUpperCase()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {formatLocaleCurrency({
-                          amount: poolData.price,
-                          currency: 'USD',
-                          locale: 'en-US',
-                        })}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <span>
-                            {parseFloat(poolData.totalSupply).toFixed(6)}
-                          </span>
-                          <CopyString text={poolData.totalSupply} size={14} />
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <div className="space-y-1">
-                          {poolData.balances.map(
-                            (balance: string, index: number) => {
-                              const tokenNames = extractTokenNames(poolName);
-                              const tokenName =
-                                tokenNames[index] || `Token ${index + 1}`;
+                {currentPools.map(([poolName, poolData]) => (
+                  <tr key={poolName} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {formatPoolName(poolName).toUpperCase()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {formatLocaleCurrency({
+                        amount: poolData.price,
+                        currency: 'USD',
+                        locale: 'en-US',
+                      })}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <span>
+                          {parseFloat(poolData.totalSupply).toFixed(6)}
+                        </span>
+                        <CopyString text={poolData.totalSupply} size={14} />
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <div className="space-y-1">
+                        {poolData.balances.map(
+                          (balance: string, index: number) => {
+                            const tokenNames = extractTokenNames(poolName);
+                            const tokenName =
+                              tokenNames[index] || `Token ${index + 1}`;
 
-                              return (
-                                <div
-                                  key={index}
-                                  className="text-xs flex items-center gap-1"
-                                >
-                                  <span className="font-medium">
-                                    {tokenName}:
-                                  </span>{' '}
-                                  <span>{parseFloat(balance).toFixed(6)}</span>
-                                  <CopyString text={balance} size={12} />
-                                </div>
-                              );
-                            }
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                            return (
+                              <div
+                                key={index}
+                                className="text-xs flex items-center gap-1"
+                              >
+                                <span className="font-medium">
+                                  {tokenName}:
+                                </span>{' '}
+                                <span>{parseFloat(balance).toFixed(6)}</span>
+                                <CopyString text={balance} size={12} />
+                              </div>
+                            );
+                          }
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
 
-          {Object.keys(pools).length > 20 && (
-            <p className="mt-4 text-sm text-gray-500">
-              Showing first 20 pools. Total: {Object.keys(pools).length} pools
-            </p>
-          )}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            onPageChange={handlePageChange}
+          />
         </CardContent>
       </Card>
     </div>
