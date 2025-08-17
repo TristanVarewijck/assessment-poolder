@@ -28,7 +28,7 @@ const BroadOverview = ({
     },
     {
       title: 'Target Protocol',
-      value: targetProtocol,
+      value: targetProtocol.toUpperCase(),
       icon: Box,
       description: 'Selected Protocol information',
     },

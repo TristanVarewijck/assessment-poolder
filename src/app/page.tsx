@@ -1,25 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { RefreshCw, AlertCircle } from 'lucide-react';
 import BroadOverview from '@/components/BroadOverview';
+import Controls from '@/components/Controls';
+import ErrorMessage from '@/components/ErrorMessage';
 
-interface PoolData {
-  price: number;
-  tokens: string[];
-  balances: string[];
-  totalSupply: string;
-}
+import { PoolData } from '@/types/data';
+import DataTable from '@/components/DataTable';
 
 interface ApiResponse {
   success: boolean;
@@ -31,7 +18,6 @@ interface ApiResponse {
   metadata: {
     totalProtocols: number;
     targetDex: string;
-    requestedDex: string | null;
     poolsCount: number;
   };
 }
@@ -86,146 +72,38 @@ export default function Home() {
   return (
     <div className="min-h-screen from-gray-150 to-white-100 bg-gradient-to-br p-8 ">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">
-          LP Data Visualizer
-        </h1>
+        <div className="flex flex-col gap-4 mb-8">
+          <h1 className="text-4xl font-bold text-gray-900">
+            LP Data Visualizer
+          </h1>
+          <p className="text-gray-500">
+            This is a tool that allows you to visualize the data of the LP pools
+            of the selected protocol.
+          </p>
+        </div>
 
-        <BroadOverview
-          protocols={data?.metadata.totalProtocols || 0}
-          targetProtocol={data?.metadata.targetDex || ''}
-          pools={data?.metadata.poolsCount || 0}
-        />
+        <div className="flex flex-col gap-4">
+          <Controls
+            protocols={data?.data.protocols || []}
+            selectedDex={selectedDex}
+            handleDexChange={handleDexChange}
+            loading={loading}
+            fetchData={fetchData}
+          />
 
-        {/* Controls */}
-        <Card className="mb-8 bg-gradient-to-b from-gray-150 to-white-100 ">
-          <CardHeader>
-            <CardTitle>Controls</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-4 items-center">
-              <Button
-                onClick={() => fetchData()}
-                disabled={loading}
-                className="flex items-center gap-2"
-              >
-                <RefreshCw
-                  className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`}
-                />
-                {loading ? 'Loading...' : 'Refresh Data'}
-              </Button>
+          <BroadOverview
+            protocols={data?.metadata.totalProtocols || 0}
+            targetProtocol={data?.metadata.targetDex || ''}
+            pools={data?.metadata.poolsCount || 0}
+          />
 
-              {data && (
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">Select DEX:</span>
-                  <Select value={selectedDex} onValueChange={handleDexChange}>
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="All (First DEX)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="default">All (First DEX)</SelectItem>
-                      {data.data.protocols.map((protocol) => (
-                        <SelectItem key={protocol} value={protocol}>
-                          {protocol}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+          {error && <ErrorMessage error={error} />}
 
-        {/* Error Display */}
-        {error && (
-          <Alert className="mb-8">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              <strong>Error:</strong> {error}
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {/* Data Display */}
-        {data && (
-          <div className="space-y-8">
-            {/* Pools Data */}
-            <Card className="bg-white">
-              <CardHeader>
-                <CardTitle>
-                  Pools for {data.metadata.targetDex} (
-                  {Object.keys(data.data.pools).length})
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Pool Name
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Price
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Total Supply
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Balances
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {Object.entries(data.data.pools)
-                        .slice(0, 20)
-                        .map(([poolName, poolData]) => (
-                          <tr key={poolName} className="hover:bg-gray-50">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                              {poolName}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              ${poolData.price.toFixed(6)}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              {parseFloat(poolData.totalSupply).toFixed(6)}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              <div className="space-y-1">
-                                {poolData.balances.map((balance, index) => (
-                                  <div key={index} className="text-xs">
-                                    Token {index + 1}:{' '}
-                                    {parseFloat(balance).toFixed(6)}
-                                  </div>
-                                ))}
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {Object.keys(data.data.pools).length > 20 && (
-                  <p className="mt-4 text-sm text-gray-500">
-                    Showing first 20 pools. Total:{' '}
-                    {Object.keys(data.data.pools).length} pools
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        )}
-
-        {/* Loading State */}
-        {loading && (
-          <div className="flex justify-center items-center py-12">
-            <div className="flex items-center gap-2">
-              <RefreshCw className="h-8 w-8 animate-spin text-blue-600" />
-              <span className="text-lg text-gray-600">Loading data...</span>
-            </div>
-          </div>
-        )}
+          <DataTable
+            targetDex={data?.metadata.targetDex || ''}
+            pools={data?.data.pools || {}}
+          />
+        </div>
       </div>
     </div>
   );

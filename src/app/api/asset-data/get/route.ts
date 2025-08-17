@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import axios from 'axios';
 
 interface PoolData {
@@ -13,7 +13,7 @@ interface GroupedData {
   pools: Record<string, PoolData>;
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const response = await axios.get('https://api.beefy.finance/lps/breakdown');
 
@@ -21,12 +21,8 @@ export async function GET(request: NextRequest) {
     const poolKeys = Object.keys(response.data);
     const protocols = [...new Set(poolKeys.map((key) => key.split('-')[0]))];
 
-    // Get the requested DEX from query parameters
-    const { searchParams } = new URL(request.url);
-    const requestedDex = searchParams.get('dex');
-
-    // Determine which DEX to use (requested or first available)
-    const targetDex = requestedDex || protocols[0];
+    // Determine which DEX to use (first available)
+    const targetDex = protocols[0];
 
     // Filter pools for the target DEX
     const filteredPools: Record<string, PoolData> = {};
@@ -50,7 +46,6 @@ export async function GET(request: NextRequest) {
       metadata: {
         totalProtocols: protocols.length,
         targetDex,
-        requestedDex,
         poolsCount: Object.keys(filteredPools).length,
       },
     });
