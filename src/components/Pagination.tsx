@@ -38,61 +38,70 @@ const Pagination = ({
 
   return (
     <div className="mt-4 flex items-center flex-col gap-3 justify-center w-full">
-      <p className="text-sm text-gray-500 w-full text-center">
+      <p className="text-sm text-gray-500 w-full text-start">
         Showing {startIndex + 1}-{Math.min(endIndex, totalItems)} of{' '}
         {totalItems} pools
       </p>
 
       <PaginationRoot>
-        <PaginationContent>
-          <PaginationItem>
+        <PaginationContent className="flex-col md:flex-row gap-2 md:gap-1 w-full">
+          {/* Previous Button */}
+          <PaginationItem className="w-full md:w-auto">
             <Button
               variant="outline"
               size="sm"
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="gap-1"
+              className="gap-1 w-full"
             >
               <ChevronLeft className="h-4 w-4" />
               Previous
             </Button>
           </PaginationItem>
 
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-            if (
-              page === 1 ||
-              page === totalPages ||
-              (page >= currentPage - 1 && page <= currentPage + 1)
-            ) {
-              return (
-                <PaginationItem key={page}>
-                  <Button
-                    variant={page === currentPage ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => onPageChange(page)}
-                    className="min-w-[32px]"
-                  >
-                    {page}
-                  </Button>
-                </PaginationItem>
-              );
-            } else if (page === currentPage - 2 || page === currentPage + 2) {
-              return (
-                <PaginationItem key={page}>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              );
-            }
-            return null;
-          })}
+          {/* Page Numbers - Hidden on small screens */}
+          <div className="hidden md:flex items-center gap-1">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+              if (
+                page === 1 ||
+                page === totalPages ||
+                (page >= currentPage - 1 && page <= currentPage + 1)
+              ) {
+                return (
+                  <PaginationItem key={page}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onPageChange(page)}
+                      className={`min-w-[32px] ${
+                        page === currentPage
+                          ? 'bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200'
+                          : 'hover:bg-gray-50'
+                      }`}
+                    >
+                      {page}
+                    </Button>
+                  </PaginationItem>
+                );
+              } else if (page === currentPage - 2 || page === currentPage + 2) {
+                return (
+                  <PaginationItem key={page}>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                );
+              }
+              return null;
+            })}
+          </div>
 
-          <PaginationItem>
+          {/* Next Button */}
+          <PaginationItem className="w-full md:w-auto">
             <Button
               variant="outline"
               size="sm"
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="gap-1"
+              className="gap-1 w-full"
             >
               Next
               <ChevronRight className="h-4 w-4" />
