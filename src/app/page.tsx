@@ -2,15 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardAction,
-  CardFooter,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -19,8 +11,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { RefreshCw, AlertCircle, ArrowUp, ArrowDown } from 'lucide-react';
+import { RefreshCw, AlertCircle } from 'lucide-react';
+import BroadOverview from '@/components/BroadOverview';
 
 interface PoolData {
   price: number;
@@ -59,21 +51,14 @@ export default function Home() {
         dex && dex !== 'default'
           ? `/api/asset-data/get?dex=${dex}`
           : '/api/asset-data/get';
-      console.log('Fetching data from:', url);
 
       const response = await fetch(url);
       const result = await response.json();
 
-      console.log('API Response:', result);
-
       if (result.success) {
         setData(result);
-        console.log('Available protocols:', result.data.protocols);
-        console.log('Pools for selected DEX:', result.data.pools);
-        console.log('Metadata:', result.metadata);
       } else {
         setError(result.error || 'Failed to fetch data');
-        console.error('API Error:', result);
       }
     } catch (err) {
       const errorMessage =
@@ -105,59 +90,13 @@ export default function Home() {
           LP Data Visualizer
         </h1>
 
-        <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-          <Card className="@container/card">
-            <CardHeader>
-              <CardDescription>Total Revenue</CardDescription>
-              <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                $1,250.00
-              </CardTitle>
-            </CardHeader>
-            <CardFooter className="flex-col items-start gap-1.5 text-sm">
-              <div className="line-clamp-1 flex gap-2 font-medium">
-                Trending up this month <ArrowUp className="size-4" />
-              </div>
-              <div className="text-muted-foreground">
-                Visitors for the last 6 months
-              </div>
-            </CardFooter>
-          </Card>
-          <Card className="@container/card">
-            <CardHeader>
-              <CardDescription>New Customers</CardDescription>
-              <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                1,234
-              </CardTitle>
-            </CardHeader>
-            <CardFooter className="flex-col items-start gap-1.5 text-sm">
-              <div className="line-clamp-1 flex gap-2 font-medium">
-                Down 20% this period <ArrowDown className="size-4" />
-              </div>
-              <div className="text-muted-foreground">
-                Acquisition needs attention
-              </div>
-            </CardFooter>
-          </Card>
-          <Card className="@container/card">
-            <CardHeader>
-              <CardDescription>Active Accounts</CardDescription>
-              <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                45,678
-              </CardTitle>
-            </CardHeader>
-            <CardFooter className="flex-col items-start gap-1.5 text-sm">
-              <div className="line-clamp-1 flex gap-2 font-medium">
-                Strong user retention <ArrowUp className="size-4" />
-              </div>
-              <div className="text-muted-foreground">
-                Engagement exceed targets
-              </div>
-            </CardFooter>
-          </Card>
-        </div>
+        <BroadOverview
+          protocols={data?.metadata.totalProtocols || 0}
+          targetProtocol={data?.metadata.targetDex || ''}
+          pools={data?.metadata.poolsCount || 0}
+        />
 
         {/* Controls */}
-        {/* gradient card gray to white from top to bottom */}
         <Card className="mb-8 bg-gradient-to-b from-gray-150 to-white-100 ">
           <CardHeader>
             <CardTitle>Controls</CardTitle>
@@ -210,39 +149,6 @@ export default function Home() {
         {/* Data Display */}
         {data && (
           <div className="space-y-8">
-            <Card className="bg-white">
-              <CardContent className="p-4 mx-12">
-                <div className="flex flex-row items-center gap-12 mx-auto justify-center">
-                  <div className="space-y-2 flex flex-col items-center">
-                    <span className="text-sm font-medium text-gray-500">
-                      Total Protocols
-                    </span>
-                    <p className="text-2xl font-bold">
-                      {data.metadata.totalProtocols}
-                    </p>
-                  </div>
-                  <span>|</span>
-                  <div className="space-y-2 flex flex-col items-center">
-                    <span className="text-sm font-medium text-gray-500">
-                      Target DEX
-                    </span>
-                    <Badge variant="secondary" className="text-lg px-3 py-1">
-                      {data.metadata.targetDex}
-                    </Badge>
-                  </div>
-                  <span>|</span>
-                  <div className="space-y-2 flex flex-col items-center">
-                    <span className="text-sm font-medium text-gray-500">
-                      Pools Count
-                    </span>
-                    <p className="text-2xl font-bold">
-                      {data.metadata.poolsCount}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Pools Data */}
             <Card className="bg-white">
               <CardHeader>

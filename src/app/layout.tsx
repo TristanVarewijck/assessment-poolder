@@ -107,9 +107,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <TooltipProvider>
           <div className="min-h-screen flex flex-col">
-            <Navbar />
+            {/* <Navbar /> */}
             <main className="flex-1">{children}</main>
-            <Footer />
+            {/* <Footer /> */}
           </div>
         </TooltipProvider>
       </body>
