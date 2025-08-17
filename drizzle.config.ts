@@ -9,6 +9,6 @@ export default {
     port: parseInt(process.env.DB_PORT || '3306'),
     user: process.env.DB_USERNAME || 'root',
     password: process.env.DB_PASSWORD || undefined,
-    database: process.env.DB_DATABASE || 'thuisbatterij',
+    database: process.env.DB_DATABASE || 'nextjs_template',
   },
 } satisfies Config;

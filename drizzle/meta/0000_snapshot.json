@@ -1,11 +1,11 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "82cb856d-4dc9-4094-adfa-17db0691e3b1",
+  "id": "43d1a03c-a8e9-4ea6-94ab-8dc7c6e898f2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "submissions": {
-      "name": "submissions",
+    "users": {
+      "name": "users",
       "columns": {
         "id": {
           "name": "id",
@@ -22,76 +22,6 @@
           "autoincrement": false,
           "default": "(now())"
         },
-        "postcode": {
-          "name": "postcode",
-          "type": "varchar(10)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "huisnummer": {
-          "name": "huisnummer",
-          "type": "varchar(10)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "straat": {
-          "name": "straat",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "plaatsnaam": {
-          "name": "plaatsnaam",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "toevoeging": {
-          "name": "toevoeging",
-          "type": "varchar(10)",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "has_solar_panels": {
-          "name": "has_solar_panels",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "yearly_consumption": {
-          "name": "yearly_consumption",
-          "type": "varchar(10)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "daytime_usage": {
-          "name": "daytime_usage",
-          "type": "varchar(20)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "first_name": {
-          "name": "first_name",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "last_name": {
-          "name": "last_name",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "email": {
           "name": "email",
           "type": "varchar(255)",
@@ -99,23 +29,23 @@
           "notNull": true,
           "autoincrement": false
         },
-        "phone": {
-          "name": "phone",
-          "type": "varchar(50)",
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "user_agent": {
-          "name": "user_agent",
-          "type": "text",
+        "avatar": {
+          "name": "avatar",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "ip_hash": {
-          "name": "ip_hash",
-          "type": "varchar(64)",
+        "bio": {
+          "name": "bio",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -124,14 +54,21 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "submissions_id": {
-          "name": "submissions_id",
+        "users_id": {
+          "name": "users_id",
           "columns": [
             "id"
           ]
         }
       },
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "columns": [
+            "email"
+          ]
+        }
+      },
       "checkConstraint": {}
     }
   },

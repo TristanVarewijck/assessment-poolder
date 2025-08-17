@@ -1,17 +1,17 @@
-# ThuisBatterij - Home Battery Landing Site
+# Next.js Template
 
-A production-ready Next.js 14+ landing site for a Dutch home battery company. Built with TypeScript, Tailwind CSS, and shadcn/ui components.
+A modern, production-ready Next.js 15+ template with TypeScript, Tailwind CSS, Drizzle ORM, and comprehensive testing setup. Perfect for building scalable web applications.
 
 ## 🚀 Features
 
-- **Modern Tech Stack**: Next.js 14+ with App Router, TypeScript, Tailwind CSS
-- **SEO Optimized**: Comprehensive metadata, sitemap, robots.txt, structured data
-- **Form Handling**: Client and server validation with Zod, React Hook Form
-- **Database**: SQLite with Drizzle ORM for development
+- **Modern Tech Stack**: Next.js 15+ with App Router, TypeScript, Tailwind CSS
+- **Database**: Drizzle ORM with MySQL/SQLite support
 - **Testing**: Jest setup with React Testing Library
-- **Design System**: Custom brand colors (blue/green energy theme)
-- **Accessibility**: ARIA labels, semantic HTML, keyboard navigation
-- **Performance**: Optimized images, lazy loading, efficient bundling
+- **Form Handling**: React Hook Form with Zod validation
+- **UI Components**: Radix UI with shadcn/ui styling
+- **Code Quality**: ESLint, Prettier, and TypeScript strict mode
+- **Performance**: Optimized bundling, lazy loading, and Core Web Vitals
+- **Developer Experience**: Hot reload, TypeScript, and comprehensive tooling
 
 ## 📋 Prerequisites
 
@@ -25,7 +25,7 @@ A production-ready Next.js 14+ landing site for a Dutch home battery company. Bu
 
    ```bash
    git clone <repository-url>
-   cd home-battery-site
+   cd nextjs-template
    ```
 
 2. **Install dependencies**
@@ -98,15 +98,16 @@ npm run test:coverage
 src/
 ├── app/                    # Next.js App Router
 │   ├── api/               # API routes
-│   │   └── submit/        # Form submission endpoint
+│   │   └── hello/         # Example API endpoint
 │   ├── globals.css        # Global styles
 │   ├── layout.tsx         # Root layout with SEO
 │   ├── page.tsx           # Home page
 │   └── sitemap.ts         # Dynamic sitemap
 ├── components/            # React components
 │   ├── ui/               # shadcn/ui components
-│   ├── sections/         # Landing page sections
-│   └── SubmissionForm.tsx # Form component
+│   ├── TemplateHero.tsx  # Template hero component
+│   ├── Navbar.tsx        # Navigation component
+│   └── Footer.tsx        # Footer component
 └── lib/                  # Utilities and configurations
     ├── db/               # Database setup
     ├── validations/      # Zod schemas
@@ -117,9 +118,9 @@ src/
 
 ### Colors
 
-- **Primary Blue**: `#2563eb` (brand-blue-600)
-- **Accent Green**: `#22c55e` (brand-green-500)
-- **Background**: White with subtle gradients
+- **Primary Blue**: `#2563eb` (blue-600)
+- **Accent Colors**: Tailwind CSS color palette
+- **Background**: Clean white with subtle gradients
 - **Text**: Gray scale for readability
 
 ### Typography
@@ -154,11 +155,11 @@ The site is built mobile-first with responsive breakpoints:
 
 ## 📊 Form Validation
 
-The submission form includes:
+The template includes example form validation:
 
 - **Client-side**: Real-time validation with React Hook Form
 - **Server-side**: Zod schema validation
-- **Fields**: Name, email, phone, postcode, annual usage, solar panels, consent
+- **Example Schema**: User registration with name, email, and bio
 - **Error Handling**: User-friendly error messages
 
 ## 🚀 Deployment
@@ -180,7 +181,14 @@ The submission form includes:
 Create a `.env.local` file for local development:
 
 ```env
-# Database (optional for SQLite)
+# Database Configuration
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USERNAME=root
+DB_PASSWORD=your_password
+DB_DATABASE=nextjs_template
+
+# For SQLite (alternative)
 DATABASE_URL="file:./local.db"
 
 # Google Analytics (optional)
@@ -231,4 +239,4 @@ The site includes:
 
 ---
 
-Built with ❤️ using Next.js, TypeScript, and Tailwind CSS
+Built with ❤️ using Next.js, TypeScript, Tailwind CSS, and Drizzle ORM
