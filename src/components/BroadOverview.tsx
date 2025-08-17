@@ -41,7 +41,7 @@ const BroadOverview = ({
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4">
       {data.map((item) => (
         <Card key={item.title} className="bg-white">
           <CardHeader className="flex flex-col items-start gap-1">

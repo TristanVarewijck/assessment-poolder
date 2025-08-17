@@ -27,13 +27,13 @@ const Controls = ({
     <Card className="bg-gradient-to-b from-gray-150 to-white-100 bg-white">
       <CardContent className="py-4">
         {protocols && (
-          <div className="flex flex-wrap gap-4 items-center justify-between">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-wrap gap-2 flex-col md:flex-row md:gap-4 md:items-center justify-between">
+            <div className="flex md:items-center flex-col md:flex-row gap-2">
               <p className="text-base font-medium">
                 Select Protocol <span className="text-gray-500">(DEX):</span>
               </p>
               <Select value={selectedDex} onValueChange={handleDexChange}>
-                <SelectTrigger className="w-[200px] bg-white">
+                <SelectTrigger className="w-full md:w-[200px] bg-white">
                   <SelectValue placeholder={selectedDex} />
                 </SelectTrigger>
                 <SelectContent className="bg-white border-none">
@@ -54,7 +54,7 @@ const Controls = ({
               variant="outline"
               onClick={() => fetchData()}
               disabled={loading}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 w-fit"
             >
               {loading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
