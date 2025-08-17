@@ -96,6 +96,7 @@ export default function Home() {
           />
 
           <BroadOverview
+            loading={loading}
             protocols={data?.metadata.totalProtocols || 0}
             targetProtocol={data?.metadata.targetDex || ''}
             pools={data?.metadata.poolsCount || 0}
@@ -106,6 +107,7 @@ export default function Home() {
           <DataTable
             targetDex={data?.metadata.targetDex || ''}
             pools={data?.data.pools || {}}
+            loading={loading}
           />
         </div>
       </div>

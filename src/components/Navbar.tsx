@@ -30,8 +30,8 @@ export function Navbar() {
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="container  mx-auto px-4">
+        <div className="flex items-center justify-between h-16 max-w-6xl ">
           <div className="flex items-center">
             <Link href="/" className="text-xl font-bold text-gray-900">
               <Image

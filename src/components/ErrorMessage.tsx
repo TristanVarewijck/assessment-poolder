@@ -7,9 +7,9 @@ interface ErrorMessageProps {
 
 const ErrorMessage = ({ error }: ErrorMessageProps) => {
   return (
-    <Alert className="mb-8">
-      <AlertCircle className="h-4 w-4" />
-      <AlertDescription>
+    <Alert className="bg-red-100 py-4">
+      <AlertCircle className="h-4 w-4 text-red-600" />
+      <AlertDescription className="py-0 text-red-600">
         <strong>Error:</strong> {error}
       </AlertDescription>
     </Alert>

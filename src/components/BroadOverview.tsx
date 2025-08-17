@@ -1,8 +1,10 @@
 import { Card, CardHeader, CardFooter, CardTitle } from '@/components/ui/card';
 import { Boxes, PackageOpen, Box } from 'lucide-react';
+import { Skeleton } from './ui/skeleton';
 
 interface BroadOverviewProps {
   protocols: number;
+  loading: boolean;
   targetProtocol: string;
   pools: number;
 }
@@ -16,9 +18,11 @@ interface BroadOverviewDataItem {
 
 const BroadOverview = ({
   protocols,
+  loading,
   targetProtocol,
   pools,
 }: BroadOverviewProps) => {
+  const skeletonCardCount: number = 3;
   const data: BroadOverviewDataItem[] = [
     {
       title: 'Protocols',
@@ -42,24 +46,37 @@ const BroadOverview = ({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4">
-      {data.map((item) => (
-        <Card key={item.title} className="bg-white">
-          <CardHeader className="flex flex-col items-start gap-1">
-            <item.icon className="size-7 text-muted-foreground text-[#75E5A7]" />
-            <div className="flex flex-col items-start gap-1">
-              <p className="text-l">{item.title}</p>
-              <CardTitle className="text-2xl font-semibold">
-                {item.value}
-              </CardTitle>
-            </div>
-          </CardHeader>
-          <CardFooter className="flex-col items-start gap-1.5 text-sm">
-            <div className="line-clamp-1 flex gap-2 items-center font-normal text-muted-foreground">
-              {item.description}
-            </div>
-          </CardFooter>
-        </Card>
-      ))}
+      {loading ? (
+        <>
+          {Array.from({ length: skeletonCardCount }).map((_, index) => (
+            <Skeleton
+              key={index}
+              className="h-[200px] w-full rounded-xl bg-white"
+            />
+          ))}
+        </>
+      ) : (
+        <>
+          {data.map((item) => (
+            <Card key={item.title} className="bg-white">
+              <CardHeader className="flex flex-col items-start gap-1">
+                <item.icon className="size-7 text-muted-foreground text-[#75E5A7]" />
+                <div className="flex flex-col items-start gap-1">
+                  <p className="text-l">{item.title}</p>
+                  <CardTitle className="text-2xl font-semibold">
+                    {item.value}
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardFooter className="flex-col items-start gap-1.5 text-sm">
+                <div className="line-clamp-1 flex gap-2 items-center font-normal text-muted-foreground">
+                  {item.description}
+                </div>
+              </CardFooter>
+            </Card>
+          ))}
+        </>
+      )}
     </div>
   );
 };
