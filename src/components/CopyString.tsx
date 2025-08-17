@@ -19,8 +19,6 @@ const CopyString = ({ text, className = '', size = 16 }: CopyStringProps) => {
 
     if (success) {
       setCopied(true);
-
-      // Reset to copy icon after 2 seconds
       setTimeout(() => {
         setCopied(false);
       }, 2000);

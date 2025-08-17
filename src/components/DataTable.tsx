@@ -1,5 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { extractTokenNames, formatLocaleCurrency } from '@/lib/utils';
+import {
+  extractTokenNames,
+  formatLocaleCurrency,
+  formatPoolName,
+} from '@/lib/utils';
 import { PoolData } from '@/types/data';
 import { Box, Calculator, Coins, DollarSign } from 'lucide-react';
 import CopyString from './CopyString';
@@ -15,16 +19,6 @@ interface TableHeader {
 }
 
 const DataTable = ({ targetDex, pools }: DataTableProps) => {
-  const formatPoolName = (poolName: string): string => {
-    const parts = poolName.split('-');
-    if (parts.length >= 3 && parts[0] === parts[1]) {
-      const remainingParts = parts.slice(1);
-      return remainingParts.join('-');
-    }
-
-    return poolName;
-  };
-
   const tableHeaders: TableHeader[] = [
     {
       label: 'Pool Name',

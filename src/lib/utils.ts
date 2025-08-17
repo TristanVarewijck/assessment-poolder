@@ -28,7 +28,6 @@ export async function copyToClipboard(text: string): Promise<boolean> {
       await navigator.clipboard.writeText(text);
       return true;
     } else {
-      // Fallback for older browsers or non-secure contexts
       const textArea = document.createElement('textarea');
       textArea.value = text;
       textArea.style.position = 'fixed';
@@ -61,4 +60,14 @@ export const extractTokenNames = (poolName: string): string[] => {
   } else {
     return parts.slice(1).map((part) => part.toUpperCase());
   }
+};
+
+export const formatPoolName = (poolName: string): string => {
+  const parts = poolName.split('-');
+  if (parts.length >= 3 && parts[0] === parts[1]) {
+    const remainingParts = parts.slice(1);
+    return remainingParts.join('-');
+  }
+
+  return poolName;
 };
