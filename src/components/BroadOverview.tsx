@@ -45,7 +45,7 @@ const BroadOverview = ({
       {data.map((item) => (
         <Card key={item.title} className="bg-white">
           <CardHeader className="flex flex-col items-start gap-1">
-            <item.icon className="size-7 text-muted-foreground" />
+            <item.icon className="size-7 text-muted-foreground text-[#75E5A7]" />
             <div className="flex flex-col items-start gap-1">
               <p className="text-l">{item.title}</p>
               <CardTitle className="text-2xl font-semibold">

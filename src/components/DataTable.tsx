@@ -44,7 +44,7 @@ const DataTable = ({ targetDex, pools }: DataTableProps) => {
         <CardHeader>
           <CardTitle className="flex text-lg flex-row items-center justify-between">
             <span>Pools for {targetDex.toUpperCase()}</span>{' '}
-            <span className="text-gray-500 text-sm">
+            <span className="text-[#30483D] text-sm">
               Total: {Object.keys(pools).length}
             </span>
           </CardTitle>

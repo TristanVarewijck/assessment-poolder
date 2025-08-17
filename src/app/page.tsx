@@ -72,13 +72,13 @@ export default function Home() {
   return (
     <div className="min-h-screen from-gray-150 to-white-100 bg-gradient-to-br p-8 ">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col gap-4 mb-8 mt-18 md:mt-20">
+        <div className="flex flex-col gap-4 mb-4 md:mb-8 mt-18 md:mt-20">
           <h1 className="text-4xl font-bold text-gray-900">
-            LP Data Visualizer
+            LP Data <span className="text-[#30483D]">Visualizer</span>
           </h1>
           <p className="text-gray-500">
-            This is a tool that allows you to visualize the data of the LP pools
-            of the selected protocol.
+            This is a tool that allows you to visualize the data of the LP of
+            the selected protocol.
           </p>
         </div>
 
