@@ -81,7 +81,9 @@ const DataTable = ({ targetDex, pools, loading }: DataTableProps) => {
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         <div className="flex flex-row items-center gap-1">
-                          <p>{header.label}</p>
+                          <p className="whitespace-nowrap min-w-max">
+                            {header.label}
+                          </p>
                           <span>
                             <header.icon size={16} />
                           </span>
