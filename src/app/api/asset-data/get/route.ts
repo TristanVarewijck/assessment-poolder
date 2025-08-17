@@ -15,7 +15,8 @@ interface GroupedData {
 
 export async function GET(request: Request) {
   try {
-    const response = await axios.get('https://api.beefy.finance/lps/breakdown');
+    const apiEndpoint = 'https://api.beefy.finance/lps/breakdown';
+    const response = await axios.get(apiEndpoint);
 
     const poolKeys = Object.keys(response.data);
     const protocols = [...new Set(poolKeys.map((key) => key.split('-')[0]))];
