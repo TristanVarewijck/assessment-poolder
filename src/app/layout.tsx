@@ -80,6 +80,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const backgroundStyleGray = {
+    backgroundImage: 'radial-gradient(circle, #C4C4C4 1px, transparent 1px)',
+    backgroundSize: '40px 40px',
+  };
+
   return (
     <html lang="en">
       <head>
@@ -108,7 +113,9 @@ export default function RootLayout({
         <TooltipProvider>
           <div className="min-h-screen flex flex-col">
             {/* <Navbar /> */}
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 bg-gray-50" style={backgroundStyleGray}>
+              {children}
+            </main>
             {/* <Footer /> */}
           </div>
         </TooltipProvider>

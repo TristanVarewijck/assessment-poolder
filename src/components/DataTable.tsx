@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { extractTokenNames, formatLocaleCurrency } from '@/lib/utils';
 import { PoolData } from '@/types/data';
 import { Box, Calculator, Coins, DollarSign } from 'lucide-react';
+import CopyString from './CopyString';
 
 interface DataTableProps {
   targetDex: string;
@@ -82,20 +84,41 @@ const DataTable = ({ targetDex, pools }: DataTableProps) => {
                         {formatPoolName(poolName).toUpperCase()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        ${poolData.price.toFixed(6)}
+                        {formatLocaleCurrency({
+                          amount: poolData.price,
+                          currency: 'USD',
+                          locale: 'en-US',
+                        })}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {parseFloat(poolData.totalSupply).toFixed(6)}
+                        <div className="flex items-center gap-1">
+                          <span>
+                            {parseFloat(poolData.totalSupply).toFixed(6)}
+                          </span>
+                          <CopyString text={poolData.totalSupply} size={14} />
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <div className="space-y-1">
                           {poolData.balances.map(
-                            (balance: string, index: number) => (
-                              <div key={index} className="text-xs">
-                                Token {index + 1}:{' '}
-                                {parseFloat(balance).toFixed(6)}
-                              </div>
-                            )
+                            (balance: string, index: number) => {
+                              const tokenNames = extractTokenNames(poolName);
+                              const tokenName =
+                                tokenNames[index] || `Token ${index + 1}`;
+
+                              return (
+                                <div
+                                  key={index}
+                                  className="text-xs flex items-center gap-1"
+                                >
+                                  <span className="font-medium">
+                                    {tokenName}:
+                                  </span>{' '}
+                                  <span>{parseFloat(balance).toFixed(6)}</span>
+                                  <CopyString text={balance} size={12} />
+                                </div>
+                              );
+                            }
                           )}
                         </div>
                       </td>

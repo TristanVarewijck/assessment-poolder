@@ -24,7 +24,7 @@ const Controls = ({
   fetchData,
 }: ControlsProps) => {
   return (
-    <Card className="bg-gradient-to-b from-gray-150 to-white-100">
+    <Card className="bg-gradient-to-b from-gray-150 to-white-100 bg-white">
       <CardContent className="py-4">
         {protocols && (
           <div className="flex flex-wrap gap-4 items-center justify-between">
