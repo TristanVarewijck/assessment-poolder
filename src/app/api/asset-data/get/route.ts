@@ -17,19 +17,15 @@ export async function GET(request: Request) {
   try {
     const response = await axios.get('https://api.beefy.finance/lps/breakdown');
 
-    // Extract DEX names from pool keys (everything before first '-')
     const poolKeys = Object.keys(response.data);
     const protocols = [...new Set(poolKeys.map((key) => key.split('-')[0]))];
 
-    // Get the requested DEX from query parameters
     const { searchParams } = new URL(request.url);
     const requestedDex = searchParams.get('dex');
 
-    // Determine which DEX to use (requested or random available)
     const targetDex =
       requestedDex || protocols[Math.floor(Math.random() * protocols.length)];
 
-    // Filter pools for the target DEX
     const filteredPools: Record<string, PoolData> = {};
 
     poolKeys.forEach((key) => {
