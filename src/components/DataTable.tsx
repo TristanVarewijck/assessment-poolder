@@ -5,7 +5,7 @@ import {
   formatPoolName,
 } from '@/lib/utils';
 import { PoolData } from '@/types/data';
-import { Box, Calculator, Coins, DollarSign } from 'lucide-react';
+import { Box, Calculator, Coins, DollarSign, Hash } from 'lucide-react';
 import CopyString from './CopyString';
 import { useState } from 'react';
 import Pagination from './Pagination';
@@ -49,6 +49,10 @@ const DataTable = ({ targetDex, pools, loading }: DataTableProps) => {
     {
       label: 'Total Supply',
       icon: Coins,
+    },
+    {
+      label: 'Tokens',
+      icon: Hash,
     },
     {
       label: 'Balances',
@@ -111,6 +115,32 @@ const DataTable = ({ targetDex, pools, loading }: DataTableProps) => {
                             {parseFloat(poolData.totalSupply).toFixed(6)}
                           </span>
                           <CopyString text={poolData.totalSupply} size={14} />
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div className="space-y-1">
+                          {poolData.tokens.map(
+                            (token: string, index: number) => {
+                              const tokenNames = extractTokenNames(poolName);
+                              const tokenName =
+                                tokenNames[index] || `Token ${index + 1}`;
+
+                              return (
+                                <div
+                                  key={index}
+                                  className="text-xs flex items-center gap-1"
+                                >
+                                  <span className="font-medium">
+                                    {tokenName}:
+                                  </span>{' '}
+                                  <span>
+                                    {token.slice(0, 8)}...{token.slice(-6)}
+                                  </span>
+                                  <CopyString text={token} size={12} />
+                                </div>
+                              );
+                            }
+                          )}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
